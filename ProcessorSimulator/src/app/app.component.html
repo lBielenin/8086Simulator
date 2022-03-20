@@ -1,0 +1,19 @@
+  <div class="container">
+    <div class="initial">
+      <!-- <div type="text" *ngFor="let field of initialRegistries; index as i;"> -->
+      <!-- <input type="text" *ngFor="let field of initialRegistries; index as i;"> -->
+      <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
+        <label for="{{item.key}}">{{item.key}}</label>
+        <input type="text" name="{{item.key}}">
+        <!-- {{item.key}}:{{item.value}} -->
+      </div>
+
+    </div>
+    <div class="transform">
+      <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
+        <label for="{{item.key}}">{{item.key}}</label>
+        <input type="radio" name="{{item.key}}">
+        <!-- {{item.key}}:{{item.value}} -->
+      </div>
+    </div>
+  </div>
