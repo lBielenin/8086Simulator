@@ -1,11 +1,11 @@
-  <mat-grid-list cols="3" rowHeight="1:2">
+  <mat-grid-list cols="3" rowHeight="500px">
     <mat-grid-tile>
-      <div class="initial">
+      <div class="initial form-group">
         <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
           <label for="{{item.key}}">{{item.key}}</label>
-          <input type="text" name="{{item.key}}">
+          <input type="text"  name="{{item.key}}" class="form-control" (change)=updateModel($event)>
         </div>
-        <button mat-raised-button color="primary">Submit initials</button>
+        <button mat-raised-button color="primary" (click)="submit()" [disabled]="!actualHasValues()">Submit initials</button>
 
       </div>
 
