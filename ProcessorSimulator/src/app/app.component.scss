@@ -14,8 +14,6 @@
 }
 
 .initial {
-    width: 40%;
-    height: 20%;
     flex-direction: column;
     display: flex;
     align-content: space-around;
@@ -36,3 +34,26 @@
 
     }
 }
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  
+  .example-radio-button {
+    margin: 5px;
+  }
+  .foot {
+      position:absolute;
+      bottom:2em;
+  }
+
+  .commandSwitch {
+      position: absolute;
+      top:1em !important;
+
+      .switchContent {
+          margin-left: 1em;
+      }
+  }

@@ -8,6 +8,9 @@ import { Registries } from './models/registry';
 })
 export class AppComponent {
   title = 'ProcessorSimulator';
+  registerNamesList = [ "AH", "AL", "BH", "BL", "CH", "CL", "DH", "DL" ];
+  from: string = "";
+  to: string = "";
 
   initialRegistries: Registries = this.GetInitialRegistries()
   actualRegistries: Registries =  this.GetInitialRegistries();

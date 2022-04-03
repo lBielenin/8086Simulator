@@ -1,19 +1,39 @@
-  <div class="container">
-    <div class="initial">
-      <!-- <div type="text" *ngFor="let field of initialRegistries; index as i;"> -->
-      <!-- <input type="text" *ngFor="let field of initialRegistries; index as i;"> -->
-      <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
-        <label for="{{item.key}}">{{item.key}}</label>
-        <input type="text" name="{{item.key}}">
-        <!-- {{item.key}}:{{item.value}} -->
+  <mat-grid-list cols="3" rowHeight="1:2">
+    <mat-grid-tile>
+      <div class="initial">
+        <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
+          <label for="{{item.key}}">{{item.key}}</label>
+          <input type="text" name="{{item.key}}">
+        </div>
+        <button mat-raised-button color="primary">Submit initials</button>
+
       </div>
 
-    </div>
-    <div class="transform">
-      <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
-        <label for="{{item.key}}">{{item.key}}</label>
-        <input type="radio" name="{{item.key}}">
-        <!-- {{item.key}}:{{item.value}} -->
-      </div>
-    </div>
-  </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-radio-group class="example-radio-group" [(ngModel)]="from">
+        <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
+          {{name}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div class="foot">From is: {{from}}</div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-radio-group aria-labelledby="example-radio-group-labelto" class="example-radio-group" [(ngModel)]="to">
+        <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
+          {{name}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <div class="foot">To is: {{to}}</div>
+
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="commandSwitch">
+        <mat-radio-group  aria-label="Select an option">
+          <mat-radio-button value="1">MV</mat-radio-button>
+          <mat-radio-button value="2">XCHANGE</mat-radio-button>
+        </mat-radio-group>
+        </div>
+      </mat-grid-tile>
+
+  </mat-grid-list>
