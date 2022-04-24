@@ -8,22 +8,28 @@ import { Registries } from './models/registry';
 })
 export class AppComponent {
   instructions = ["MOV", "XCHG", "INC", "DEC", "NEG"]
+  //["AND", "OR", "XOR", 
+  //"ADD", "SUB"] WYNIK DO PIERWSZEGO REJESTRU
   title = 'ProcessorSimulator';
   registerNamesList = [ "AH", "AL", "BH", "BL", "CH", "CL", "DH", "DL" ];
+  initialSubmitted = true;
   from: string = "";
   to: string = "";
-  initialSubmitted = false;
   regexp = /^[0-9a-fA-F]{1,2}$/;
-
+  currentCommand = "";
   initialRegistries: Registries = this.GetInitialRegistries()
   actualRegistries: Registries =  this.GetInitialRegistries();
+  pickedLeft = "";
+  pickedRight = "";
   
   private GetInitialRegistries(): Registries {
-    return { AH: "", AL: "", BH: "", BL: "", CH: "", CL: "", DH: "", DL: "" }
+    return { AH: "1", AL: "2", BH: "3", BL: "4", CH: "5", CL: "6", DH: "7", DL: "8" }
   }
 
-  submit() {
-    console.log(this.actualHasValues());
+  submitInitials() {
+    console.log(this.initialRegistries);
+    console.log(this.actualRegistries);
+    this.initialSubmitted = true;
   }
   updateModel($event: any) {
     console.log($event);
@@ -45,6 +51,21 @@ export class AppComponent {
       }
     }
     return true;
+  }
+
+  executeCommand() {
+    if(this.currentCommand === 'MOV') {
+      this.actualRegistries[this.to] = this.actualRegistries[this.from];
+    }
+    if(this.currentCommand === 'XCHG') {
+      let temp = this.actualRegistries[this.from];
+      this.actualRegistries[this.from] = this.actualRegistries[this.to];
+      this.actualRegistries[this.to] = temp;
+
+    }
+
+    this.from = "";
+    this.to = "";
   }
   
 }
