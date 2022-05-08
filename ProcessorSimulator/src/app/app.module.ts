@@ -9,6 +9,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import { HexValidatorDirective } from './hex-validator.directive';
+import {MatIconModule} from '@angular/material/icon'
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { HexValidatorDirective } from './hex-validator.directive';
     MatGridListModule,
     MatRadioModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

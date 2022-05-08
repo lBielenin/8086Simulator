@@ -69,23 +69,41 @@
 </div>
 
 
-<div *ngIf="initialSubmitted  && (currentCommand == 'INC' || currentCommand == 'DEC')" >
+<div *ngIf="initialSubmitted  && (currentCommand == 'INC/DEC')" >
   <mat-grid-list  cols="1" rowHeight="150px">
     <mat-grid-tile>
       <div class="initial form-group">
-        <div class="initialListElement" *ngFor="let item of actualRegistries | keyvalue">
-          <p>{{item.key}}</p>
-          <p>{{item.value}}</p>
+        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+          <div class="ascDescListElement__label">
+            <p>{{item.key}}</p>
+            <p>{{item.value}}</p>
+          </div>
+          <div class="ascDescListElement__arrows">
+            <mat-icon (click)="hexAdd(item.key, item.value)">keyboard_arrow_up</mat-icon>
+            <mat-icon (click)="hexSubstract(item.key, item.value)">keyboard_arrow_down</mat-icon>
+          </div>
         </div>
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-  <!-- <mat-grid-list *ngIf="initialSubmitted && (currentCommand == 'MOV' || currentCommand == 'XCHG')"  cols="1" rowHeight="100">
-    <mat-grid-tile>
-      <button mat-raised-button color="primary" (click)="executeCommand()" [disabled]="!actualHasValues()">{{currentCommand}}</button>
-
-    </mat-grid-tile>
-
-  </mat-grid-list> -->
 
 </div>
+<div *ngIf="initialSubmitted  && (currentCommand == 'NOT')" >
+  <mat-grid-list  cols="1" rowHeight="150px">
+    <mat-grid-tile>
+      <div class="initial form-group">
+        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+          <div class="ascDescListElement__label">
+            <p>{{item.key}}</p>
+            <p>{{item.value}}</p>
+          </div>
+          <div class="ascDescListElement__arrows">
+            <mat-icon (click)="performNot(item.key, item.value)">autorenew</mat-icon>
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>
+<!-- Trzeba zrobic takie same instrukcje rowniez dla pamieci 080522 -->

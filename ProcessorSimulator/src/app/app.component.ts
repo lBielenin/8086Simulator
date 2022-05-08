@@ -7,7 +7,7 @@ import { Registries } from './models/registry';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  instructions = ["MOV", "XCHG", "INC", "DEC", "NEG"]
+  instructions = ["MOV", "XCHG", "INC/DEC", "NEG", "NOT"]
   //["AND", "OR", "XOR", 
   //"ADD", "SUB"] WYNIK DO PIERWSZEGO REJESTRU
   title = 'ProcessorSimulator';
@@ -21,7 +21,7 @@ export class AppComponent {
   actualRegistries: Registries =  this.GetInitialRegistries();
   pickedLeft = "";
   pickedRight = "";
-  
+  // Trzeba zrobic takie same instrukcje rowniez dla pamieci 080522 
   private GetInitialRegistries(): Registries {
     return { AH: "1", AL: "2", BH: "3", BL: "4", CH: "5", CL: "6", DH: "7", DL: "8" }
   }
@@ -68,4 +68,35 @@ export class AppComponent {
     this.to = "";
   }
   
+  hexAdd(registry:string, value:string) {
+    let number = parseInt(value, 16);
+    if(number + 1 > 255) {
+      number = 0;
+    } else { number++ }
+    this.actualRegistries[registry] = number.toString(16);
+  }
+
+  hexSubstract(registry:string, value:string) {
+    let number = parseInt(value, 16);
+    if(number - 1 < 0) {
+      number = 255;
+    } else { number-- }
+    this.actualRegistries[registry] = number.toString(16);
+  }
+  performNot(registry:string, value:string) {
+    let splitted = value.split('');
+    let result = '';
+    splitted.forEach(s => {
+      var parsed = parseInt(s, 10).toString(2).padStart(4, "0");
+      var temps = 
+      parsed
+      .replace(/0/g, 'A')
+      .replace(/1/g, 'B')
+      .replace(/A/g, '1')
+      .replace(/B/g, '0');
+      let hex = parseInt(temps, 2).toString(16);
+      result += hex;
+    });
+    this.actualRegistries[registry] = result;
+  }
 }
