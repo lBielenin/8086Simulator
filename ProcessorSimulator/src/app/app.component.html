@@ -106,4 +106,22 @@
   </mat-grid-list>
 
 </div>
+<div *ngIf="initialSubmitted  && (currentCommand == 'NEG')" >
+  <mat-grid-list  cols="1" rowHeight="150px">
+    <mat-grid-tile>
+      <div class="initial form-group">
+        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+          <div class="ascDescListElement__label">
+            <p>{{item.key}}</p>
+            <p>{{item.value}}</p>
+          </div>
+          <div class="ascDescListElement__arrows">
+            <mat-icon (click)="performNeg(item.key, item.value)">autorenew</mat-icon>
+          </div>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</div>
 <!-- Trzeba zrobic takie same instrukcje rowniez dla pamieci 080522 -->

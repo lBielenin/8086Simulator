@@ -84,19 +84,25 @@ export class AppComponent {
     this.actualRegistries[registry] = number.toString(16);
   }
   performNot(registry:string, value:string) {
-    let splitted = value.split('');
-    let result = '';
-    splitted.forEach(s => {
-      var parsed = parseInt(s, 10).toString(2).padStart(4, "0");
-      var temps = 
-      parsed
-      .replace(/0/g, 'A')
-      .replace(/1/g, 'B')
-      .replace(/A/g, '1')
-      .replace(/B/g, '0');
-      let hex = parseInt(temps, 2).toString(16);
-      result += hex;
-    });
-    this.actualRegistries[registry] = result;
+    this.actualRegistries[registry] = this.getNot(value);
+  }
+
+  performNeg(registry:string, value:string) {
+    let val = this.getNot(value);
+    this.hexAdd(registry,val);
+  }
+
+  private getNot(value:string):string {
+    let paddint = 8 - value.length; 
+    var parsed = parseInt(value, 10).toString(2).padStart(paddint, "0");
+    var temps = 
+    parsed
+    .replace(/0/g, 'A')
+    .replace(/1/g, 'B')
+    .replace(/A/g, '1')
+    .replace(/B/g, '0');
+    let hex = parseInt(temps, 2).toString(16);
+
+    return hex;
   }
 }
