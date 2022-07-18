@@ -1,127 +1,203 @@
-<mat-grid-list *ngIf="!initialSubmitted" cols="1" rowHeight="500px">
-  <mat-grid-tile>
-    <div class="initial form-group">
-      <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
-        <label for="{{item.key}}">{{item.key}}</label>
-        <input type="text" name="{{item.key}}" class="form-control" (change)=updateModel($event)>
-      </div>
+<div class="program-container">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>My App</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-    </div>
-    <button mat-raised-button color="primary" (click)="submitInitials()" [disabled]="!actualHasValues()">Submit
-      initials</button>
-
-  </mat-grid-tile>
-</mat-grid-list>
-
-<mat-grid-list *ngIf="initialSubmitted" cols="1" rowHeight="100px">
-  <mat-grid-tile>
-    <div class="initial form-group">
-      <div class="initialListElement" *ngFor="let item of actualRegistries | keyvalue">
-        <p>{{item.key}}</p>
-        <p>{{item.value}}</p>
-      </div>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
-<mat-grid-list *ngIf="initialSubmitted" cols="1" rowHeight="100">
-  <mat-grid-tile>
-    <div class="commandSwitch">
-      <mat-radio-group [(ngModel)]="currentCommand" aria-label="Select an option">
-        <mat-radio-button class="example-radio-button" *ngFor="let inst of instructions" [value]="inst">
-          {{inst}}
-        </mat-radio-button>
-      </mat-radio-group>
-    </div>
-  </mat-grid-tile>
-</mat-grid-list>
-<!-- <div [ngSwitch]="switch_expression"></div> -->
-
-<div *ngIf="initialSubmitted  && (currentCommand == 'MOV' || currentCommand == 'XCHG')" >
-  <mat-grid-list cols="2" rowHeight="500px">
-    <mat-grid-tile>
-      <mat-radio-group class="example-radio-group" [(ngModel)]="from">
-        <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
-          {{name}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div class="foot"  *ngIf="from">From is: {{from}}</div>
-  
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <mat-radio-group aria-labelledby="example-radio-group-labelto" class="example-radio-group" [(ngModel)]="to">
-        <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
-          {{name}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <div class="foot" *ngIf="to">To is: {{to}}</div>
-  
-    </mat-grid-tile>
-
-  </mat-grid-list> 
-  <mat-grid-list *ngIf="initialSubmitted && (currentCommand == 'MOV' || currentCommand == 'XCHG')"  cols="1" rowHeight="100">
-    <mat-grid-tile>
-      <button mat-raised-button color="primary" (click)="executeCommand()" [disabled]="!actualHasValues()">{{currentCommand}}</button>
-
-    </mat-grid-tile>
-
-  </mat-grid-list>
-
-</div>
-
-
-<div *ngIf="initialSubmitted  && (currentCommand == 'INC/DEC')" >
-  <mat-grid-list  cols="1" rowHeight="150px">
-    <mat-grid-tile>
-      <div class="initial form-group">
-        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
-          <div class="ascDescListElement__label">
-            <p>{{item.key}}</p>
-            <p>{{item.value}}</p>
+  <div>
+    <mat-grid-list *ngIf="!initialSubmitted" cols="1" rowHeight="500px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="initialListElement" *ngFor="let item of initialRegistries | keyvalue">
+            <label for="{{item.key}}">{{item.key}}</label>
+            <input type="text" name="{{item.key}}" class="form-control" (change)=updateModel($event)>
           </div>
-          <div class="ascDescListElement__arrows">
-            <mat-icon (click)="hexAdd(item.key, item.value)">keyboard_arrow_up</mat-icon>
-            <mat-icon (click)="hexSubstract(item.key, item.value)">keyboard_arrow_down</mat-icon>
+
+        </div>
+        <button mat-raised-button color="primary" (click)="submitInitials()" [disabled]="!actualHasValues()">Submit
+          initials</button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list *ngIf="initialSubmitted" cols="1" rowHeight="100px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="initialListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <p class="cell">{{item.key}}</p>
+            <p class="cell">{{item.value}}</p>
           </div>
         </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+
+  <mat-grid-list *ngIf="initialSubmitted" cols="1" rowHeight="100">
+    <mat-grid-tile>
+      <div class="commandSwitch">
+        <mat-radio-group [(ngModel)]="currentCommand" aria-label="Select an option">
+          <mat-radio-button class="example-radio-button" *ngFor="let inst of instructions" [value]="inst">
+            {{inst}}
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
     </mat-grid-tile>
   </mat-grid-list>
 
-</div>
-<div *ngIf="initialSubmitted  && (currentCommand == 'NOT')" >
-  <mat-grid-list  cols="1" rowHeight="150px">
-    <mat-grid-tile>
-      <div class="initial form-group">
-        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
-          <div class="ascDescListElement__label">
-            <p>{{item.key}}</p>
-            <p>{{item.value}}</p>
-          </div>
-          <div class="ascDescListElement__arrows">
-            <mat-icon (click)="performNot(item.key, item.value)">autorenew</mat-icon>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'MOV' || currentCommand == 'XCHG')">
+    <mat-grid-list cols="2" rowHeight="500px">
+      <mat-grid-tile>
+        <mat-radio-group class="example-radio-group" [(ngModel)]="from">
+          <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
+            {{name}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <div class="foot" *ngIf="from">From is: {{from}}</div>
+
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-radio-group aria-labelledby="example-radio-group-labelto" class="example-radio-group" [(ngModel)]="to">
+          <mat-radio-button class="example-radio-button" *ngFor="let name of registerNamesList" [value]="name">
+            {{name}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <div class="foot" *ngIf="to">To is: {{to}}</div>
+
+      </mat-grid-tile>
+
+    </mat-grid-list>
+    <mat-grid-list *ngIf="initialSubmitted && (currentCommand == 'MOV' || currentCommand == 'XCHG')" cols="1"
+      rowHeight="100">
+      <mat-grid-tile>
+        <button mat-raised-button color="primary" (click)="executeCommand()"
+          [disabled]="!actualHasValues()">{{currentCommand}}</button>
+
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'INC/DEC')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+            </div>
+            <div class="ascDescListElement__arrows">
+              <mat-icon (click)="hexAdd(item.key, item.value)">keyboard_arrow_up</mat-icon>
+              <mat-icon (click)="hexSubstract(item.key, item.value)">keyboard_arrow_down</mat-icon>
+            </div>
           </div>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
 
-</div>
-<div *ngIf="initialSubmitted  && (currentCommand == 'NEG')" >
-  <mat-grid-list  cols="1" rowHeight="150px">
-    <mat-grid-tile>
-      <div class="initial form-group">
-        <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
-          <div class="ascDescListElement__label">
-            <p>{{item.key}}</p>
-            <p>{{item.value}}</p>
-          </div>
-          <div class="ascDescListElement__arrows">
-            <mat-icon (click)="performNeg(item.key, item.value)">autorenew</mat-icon>
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'NOT')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+            </div>
+            <div class="ascDescListElement__arrows">
+              <mat-icon (click)="performNot(item.key, item.value)">autorenew</mat-icon>
+            </div>
           </div>
         </div>
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      </mat-grid-tile>
+    </mat-grid-list>
 
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'NEG')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+            </div>
+            <div class="ascDescListElement__arrows">
+              <mat-icon (click)="performNeg(item.key, item.value)">autorenew</mat-icon>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'AND')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+              <div class="ascDescListElement__arrows">
+                <mat-select>
+                  <mat-option (click)="performAdd(item.key, $event)" class="radio-options"
+                    *ngFor="let reg of actualRegistries | keyvalue" [value]="reg.key">
+                    {{reg.key}}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'OR')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+              <div class="ascDescListElement__arrows">
+                <mat-select>
+                  <mat-option (click)="performOr(item.key, $event)" class="radio-options"
+                    *ngFor="let reg of actualRegistries | keyvalue" [value]="reg.key">
+                    {{reg.key}}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div *ngIf="initialSubmitted  && (currentCommand == 'XOR')">
+    <mat-grid-list cols="1" rowHeight="150px">
+      <mat-grid-tile>
+        <div class="initial form-group">
+          <div class="ascDescListElement" *ngFor="let item of actualRegistries | keyvalue">
+            <div class="ascDescListElement__label">
+              <p class="cell">{{item.key}}</p>
+              <p class="cell">{{item.value}}</p>
+              <div class="ascDescListElement__arrows">
+                <mat-select>
+                  <mat-option (click)="performXOr(item.key, $event)" class="radio-options"
+                    *ngFor="let reg of actualRegistries | keyvalue" [value]="reg.key">
+                    {{reg.key}}
+                  </mat-option>
+                </mat-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
 </div>
-<!-- Trzeba zrobic takie same instrukcje rowniez dla pamieci 080522 -->

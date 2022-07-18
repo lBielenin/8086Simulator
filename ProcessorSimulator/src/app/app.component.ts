@@ -7,32 +7,25 @@ import { Registries } from './models/registry';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  instructions = ["MOV", "XCHG", "INC/DEC", "NEG", "NOT"]
-  //["AND", "OR", "XOR", 
-  //"ADD", "SUB"] WYNIK DO PIERWSZEGO REJESTRU
+  instructions = ["MOV", "XCHG", "INC/DEC", "NEG", "NOT", "AND",  "OR", "XOR"]
   title = 'ProcessorSimulator';
   registerNamesList = [ "AH", "AL", "BH", "BL", "CH", "CL", "DH", "DL" ];
-  initialSubmitted = true;
+  initialSubmitted = false;
   from: string = "";
   to: string = "";
   regexp = /^[0-9a-fA-F]{1,2}$/;
   currentCommand = "";
   initialRegistries: Registries = this.GetInitialRegistries()
   actualRegistries: Registries =  this.GetInitialRegistries();
-  pickedLeft = "";
-  pickedRight = "";
-  // Trzeba zrobic takie same instrukcje rowniez dla pamieci 080522 
+
   private GetInitialRegistries(): Registries {
-    return { AH: "1", AL: "2", BH: "3", BL: "4", CH: "5", CL: "6", DH: "7", DL: "8" }
+    return { AH: "0", AL: "1", BH: "2", BL: "3", CH: "4", CL: "5", DH: "6", DL: "7" }
   }
 
   submitInitials() {
-    console.log(this.initialRegistries);
-    console.log(this.actualRegistries);
     this.initialSubmitted = true;
   }
   updateModel($event: any) {
-    console.log($event);
     if(this.regexp.test($event.target.value)) {
       $event.target.style.borderColor = '#ced4da';
       let name = $event.target.name as string;
@@ -93,16 +86,71 @@ export class AppComponent {
   }
 
   private getNot(value:string):string {
-    let paddint = 8 - value.length; 
-    var parsed = parseInt(value, 10).toString(2).padStart(paddint, "0");
+    var parsedHex = parseInt(value, 16).toString(2);
+    var parsed = parsedHex.padStart(8, "0");
     var temps = 
     parsed
     .replace(/0/g, 'A')
     .replace(/1/g, 'B')
     .replace(/A/g, '1')
     .replace(/B/g, '0');
-    let hex = parseInt(temps, 2).toString(16);
+    let hexInt = parseInt(temps, 2);
+    let hex = hexInt.toString(16);
 
     return hex;
+  }
+
+  public performAdd(destination:any, src: MouseEvent) {
+    let trg = <HTMLSpanElement>src.target;
+    
+    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
+    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
+
+    let resultStr = '';
+    for (var i = 0; i < binaryDest.length; i++) {
+      if(binaryDest.charAt(i) === binarySrc.charAt(i) && binaryDest.charAt(i) === '1') {
+        resultStr += '1';
+      } else {
+        resultStr += '0';
+      }
+    }
+    
+    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
+  }
+
+  public performOr(destination:any, src: MouseEvent) {
+    let trg = <HTMLSpanElement>src.target;
+    
+    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
+    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
+
+    let resultStr = '';
+    for (var i = 0; i < binaryDest.length; i++) {
+      if(binarySrc.charAt(i) === '1' || binaryDest.charAt(i) === '1') {
+        resultStr += '1';
+      } else {
+        resultStr += '0';
+      }
+    }
+    
+    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
+  }
+
+  public performXOr(destination:any, src: MouseEvent) {
+    let trg = <HTMLSpanElement>src.target;
+    
+    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
+    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
+
+    let resultStr = '';
+    for (var i = 0; i < binaryDest.length; i++) {
+      if(binarySrc.charAt(i) === binaryDest.charAt(i)) {
+        resultStr += '0';
+      } else {
+        resultStr += '1';
+      }
+    }
+    
+    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
   }
 }

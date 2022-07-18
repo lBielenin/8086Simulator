@@ -1,8 +1,6 @@
-// mat-grid-list {
-//     display: flex ;
-//     flex-wrap: wrap;
-//     justify-content: center ;
-// }
+.program-container {
+    background-color: white;
+}
 .execute-btn {
     margin-left: 2em;
 }
@@ -24,7 +22,9 @@
         background-color: green;
     }
 }
-
+.cell {
+    text-align: center;
+}
 .initial {
     display: flex ;
     flex-wrap: wrap;
@@ -47,14 +47,17 @@
         flex-direction: column;
         align-content: space-around;
         justify-content: space-between;
-
+        border-color: lightgrey;
+        border: 1px solid #ccc!important;
         label {
             text-align: center;
         }
         input {
             width: 100%;;
         }
-
+        .radio-options {
+            width: 1em;
+        }
     }
 
     .ascDescListElement {
