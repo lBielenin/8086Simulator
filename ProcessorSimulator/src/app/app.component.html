@@ -67,10 +67,9 @@
           </mat-radio-button>
         </mat-radio-group>
         <div class="foot" *ngIf="to">To is: {{to}}</div>
-
       </mat-grid-tile>
-
     </mat-grid-list>
+
     <mat-grid-list *ngIf="initialSubmitted && (currentCommand == 'MOV' || currentCommand == 'XCHG')" cols="1"
       rowHeight="100">
       <mat-grid-tile>
@@ -144,7 +143,7 @@
               <p class="cell">{{item.value}}</p>
               <div class="ascDescListElement__arrows">
                 <mat-select>
-                  <mat-option (click)="performAdd(item.key, $event)" class="radio-options"
+                  <mat-option (click)="performAnd(item.key, $event)" class="radio-options"
                     *ngFor="let reg of actualRegistries | keyvalue" [value]="reg.key">
                     {{reg.key}}
                   </mat-option>

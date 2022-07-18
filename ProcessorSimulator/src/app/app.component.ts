@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Registries } from './models/registry';
+import { BinaryService } from './services/binary.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,12 @@ export class AppComponent {
   initialRegistries: Registries = this.GetInitialRegistries()
   actualRegistries: Registries =  this.GetInitialRegistries();
 
+  constructor(
+    private binaryService: BinaryService
+  ) { }
+
   private GetInitialRegistries(): Registries {
-    return { AH: "0", AL: "1", BH: "2", BL: "3", CH: "4", CL: "5", DH: "6", DL: "7" }
+    return { AH: '', AL: '', BH: '', BL: '', CH: '', CL: '', DH: '', DL: '' }
   }
 
   submitInitials() {
@@ -32,9 +37,7 @@ export class AppComponent {
       this.actualRegistries[name] = $event.target.value;
     } else {
       $event.target.style.borderColor = 'red';
-
     }
-
   }
 
   actualHasValues():boolean {
@@ -48,13 +51,10 @@ export class AppComponent {
 
   executeCommand() {
     if(this.currentCommand === 'MOV') {
-      this.actualRegistries[this.to] = this.actualRegistries[this.from];
+      this.binaryService.performMov(this.actualRegistries, this.from, this.to)
     }
     if(this.currentCommand === 'XCHG') {
-      let temp = this.actualRegistries[this.from];
-      this.actualRegistries[this.from] = this.actualRegistries[this.to];
-      this.actualRegistries[this.to] = temp;
-
+      this.binaryService.performXchg(this.actualRegistries, this.from, this.to)
     }
 
     this.from = "";
@@ -62,95 +62,29 @@ export class AppComponent {
   }
   
   hexAdd(registry:string, value:string) {
-    let number = parseInt(value, 16);
-    if(number + 1 > 255) {
-      number = 0;
-    } else { number++ }
-    this.actualRegistries[registry] = number.toString(16);
+    this.binaryService.hexAdd(this.actualRegistries, registry, value);
   }
 
   hexSubstract(registry:string, value:string) {
-    let number = parseInt(value, 16);
-    if(number - 1 < 0) {
-      number = 255;
-    } else { number-- }
-    this.actualRegistries[registry] = number.toString(16);
+    this.binaryService.hexSubstract(this.actualRegistries, registry, value);
   }
   performNot(registry:string, value:string) {
-    this.actualRegistries[registry] = this.getNot(value);
+    this.binaryService.performNot(this.actualRegistries, registry, value);
   }
 
   performNeg(registry:string, value:string) {
-    let val = this.getNot(value);
-    this.hexAdd(registry,val);
+    this.binaryService.performNeg(this.actualRegistries, registry, value);
   }
 
-  private getNot(value:string):string {
-    var parsedHex = parseInt(value, 16).toString(2);
-    var parsed = parsedHex.padStart(8, "0");
-    var temps = 
-    parsed
-    .replace(/0/g, 'A')
-    .replace(/1/g, 'B')
-    .replace(/A/g, '1')
-    .replace(/B/g, '0');
-    let hexInt = parseInt(temps, 2);
-    let hex = hexInt.toString(16);
-
-    return hex;
-  }
-
-  public performAdd(destination:any, src: MouseEvent) {
-    let trg = <HTMLSpanElement>src.target;
-    
-    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
-    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
-
-    let resultStr = '';
-    for (var i = 0; i < binaryDest.length; i++) {
-      if(binaryDest.charAt(i) === binarySrc.charAt(i) && binaryDest.charAt(i) === '1') {
-        resultStr += '1';
-      } else {
-        resultStr += '0';
-      }
-    }
-    
-    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
+  public performAnd(destination:any, src: MouseEvent) {
+    this.binaryService.performAnd(this.actualRegistries, destination, src);
   }
 
   public performOr(destination:any, src: MouseEvent) {
-    let trg = <HTMLSpanElement>src.target;
-    
-    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
-    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
-
-    let resultStr = '';
-    for (var i = 0; i < binaryDest.length; i++) {
-      if(binarySrc.charAt(i) === '1' || binaryDest.charAt(i) === '1') {
-        resultStr += '1';
-      } else {
-        resultStr += '0';
-      }
-    }
-    
-    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
+    this.binaryService.performOr(this.actualRegistries, destination, src);
   }
 
   public performXOr(destination:any, src: MouseEvent) {
-    let trg = <HTMLSpanElement>src.target;
-    
-    let binaryDest = parseInt(this.actualRegistries[destination], 16).toString(2).padStart(8, "0");
-    let binarySrc = parseInt(this.actualRegistries[trg.innerText], 16).toString(2).padStart(8, "0");
-
-    let resultStr = '';
-    for (var i = 0; i < binaryDest.length; i++) {
-      if(binarySrc.charAt(i) === binaryDest.charAt(i)) {
-        resultStr += '0';
-      } else {
-        resultStr += '1';
-      }
-    }
-    
-    this.actualRegistries[destination] = parseInt(resultStr, 2).toString(16);
+    this.binaryService.performXOr(this.actualRegistries, destination, src);
   }
 }
