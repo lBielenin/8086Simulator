@@ -31,12 +31,15 @@ export class AppComponent {
     this.initialSubmitted = true;
   }
   updateModel($event: any) {
+    let name = $event.target.name as string;
     if(this.regexp.test($event.target.value)) {
       $event.target.style.borderColor = '#ced4da';
       let name = $event.target.name as string;
       this.actualRegistries[name] = $event.target.value;
     } else {
       $event.target.style.borderColor = 'red';
+      let name = $event.target.name as string;
+      this.actualRegistries[name] = '';
     }
   }
 
